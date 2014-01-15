@@ -4,25 +4,27 @@ RNA-seq pipeline for importing and anaylzying .fastq files in MATLAB
 Functions:
 
 set_pipeline_params:
-   input arguments:
+   Input arguments:
       1. NONE
-   values returned:
+   Values returned:
       1. parameters - struct containing relevant information to many different functions
    Desicription:
       Often called first in a pipeline. User's are expected to modify specified parameters and directory locations inside to point to their own data. The returned struct is frequently passed to and modifed by functions throughout the pipeline. 
    Example:
+      % initialize params struct
       params = set_pipeline_params();
 
 
 runbowtie2:
-   input arguements:
+   Input arguements:
       1. file_index - the index of a fastq file in a list of fastq filenames in paramater struct 
       2. parameters - parameter struct returned by set_pipeline_params
-   values returned:
+   Values returned:
       1. paramters - returns a modified parameters to include information about the alignment (sam filenames)
    Description:
       Wrapper for calling bowtie2 within matlab. The function call to the command line is constructed within this function. It obtains its bowtie function call parameters from the parameters struct.
    Example:
+      % run bowtie2 on each file in the list of fastq files
       for file_ind = 1:numel(params.fastq_files)
          params = runbowtie2(file_ind, params);
       end
@@ -30,5 +32,15 @@ runbowtie2:
 sam_gene_align:
 
 
+convert_bam:
+
+   Description:
+      Wrapper call to samtools to convert between Sam and Bam formats. If sam file is passed in, the function converts it to bam. If a bam file is passed in it converts it to a sam file.
+   Input arguments:
+      file_in - sam/bam file to convert, include extension
+      file_out - sam/bam file to convert to, include extension
+   Example:
+      % convert my.bam to my.sam
+      convert_bam('/path/my.bam', '/path/my.sam');
 
 
