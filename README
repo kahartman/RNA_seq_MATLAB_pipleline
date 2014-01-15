@@ -1,2 +1,34 @@
 RNA-seq pipeline for importing and anaylzying .fastq files in MATLAB
   written by Graham Heimberg -- Graham.Heimberg@ucsf.edu
+
+Functions:
+
+set_pipeline_params:
+   input arguments:
+      1. NONE
+   values returned:
+      1. parameters - struct containing relevant information to many different functions
+   Desicription:
+      Often called first in a pipeline. User's are expected to modify specified parameters and directory locations inside to point to their own data. The returned struct is frequently passed to and modifed by functions throughout the pipeline. 
+   Example:
+      params = set_pipeline_params();
+
+
+runbowtie2:
+   input arguements:
+      1. file_index - the index of a fastq file in a list of fastq filenames in paramater struct 
+      2. parameters - parameter struct returned by set_pipeline_params
+   values returned:
+      1. paramters - returns a modified parameters to include information about the alignment (sam filenames)
+   Description:
+      Wrapper for calling bowtie2 within matlab. The function call to the command line is constructed within this function. It obtains its bowtie function call parameters from the parameters struct.
+   Example:
+      for file_ind = 1:numel(params.fastq_files)
+         params = runbowtie2(file_ind, params);
+      end
+
+sam_gene_align:
+
+
+
+
