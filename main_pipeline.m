@@ -29,6 +29,6 @@ end
 
 %% read accepted_hits.sam files
 for n = 1:numel(params.sam_files),
-   params = genecounts(n, params);
+   params = sam_gene_align(n, params);
 end
 

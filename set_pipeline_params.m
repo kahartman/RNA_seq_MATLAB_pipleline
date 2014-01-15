@@ -29,8 +29,10 @@ params.sam_dir = '/home/graham/MATLAB/RNAseq_pipeline/alignments/';
 % choose to run tophat (1) or bowtie (0)
 params.tophat = 0;
 params.processors = 4;
-params.genome = '/home/graham/Projects/reference_genomes/UCSC/mm9/Sequence/Bowtie2Index/genome';
-params.gtf_file = '/home/graham/Projects/reference_genomes/UCSC/mm9/Annotation/Genes/genes.gtf';
+params.genome = '/home/graham/Projects/reference_genomes/Gloria/gloria_sk1/gloria_sk1';
+%params.genome = '/home/graham/Projects/reference_genomes/UCSC/mm9/Sequence/Bowtie2Index/genome';
+params.gtf_file = '/home/graham/Projects/reference_genomes/Gloria/genes/genes_only.gff';
+%params.gtf_file = '/home/graham/Projects/reference_genomes/UCSC/mm9/Annotation/Genes/genes.gtf';
 if params.tophat == 0
     % bowtie2 parameters
     params.bowtie2_dir = '/home/graham/Software/bowtie2-2.1.0/';

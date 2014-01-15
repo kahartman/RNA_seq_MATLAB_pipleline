@@ -1,5 +1,10 @@
 function [aligned_count, counts] = hash_sam_gene_align(read_starts, read_chroms, params)
 
+% read sam file
+[start, chrom] = read_sam([params.sam_dir, params.sam_files{n}]);
+
+
+
 % Align to genes
 
 counts = zeros(size(params.starts));
@@ -32,7 +37,6 @@ for curr_chrom = 1:params.chrom_num
     end;
 end;
 
-counts = counts(params.starts>0);
-
+params.allsamples = [params.allsamples, counts(params.starts>0)];
 end
 
