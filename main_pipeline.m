@@ -65,6 +65,9 @@ for gene_ind = 1:numel(gene_names)
 %    end
 end
 
+params.allsamples = all_counts;
+params.gene_names_ordered = gene_names;
+
 % %% calculating KL-divergence
 % 
 % figure;
