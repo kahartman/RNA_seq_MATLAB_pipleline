@@ -15,8 +15,8 @@ imported_txt = textscan(f_in, format, 'delimiter', '\t');
 chrom_names = unique(imported_txt{1});
 
 for i=1:numel(imported_txt{9})
-    attributes = textscan(imported_txt{9}{i}, '%s%s%s%s%s%s%s%s%s%s', 'delimiter',{';'});
-    all_names{i} = attributes{2}{1};
+    attributes = textscan(imported_txt{9}{i}, '%s%s%s%s%s%s%s%s%s%s%s', 'delimiter',{'"'});
+    all_names{i} = attributes{8}{1};
     
 end
 

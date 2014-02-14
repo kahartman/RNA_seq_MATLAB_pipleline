@@ -1,40 +1,49 @@
 function [params] = runtophat(n, params)
-% params = runtophat(fastq_files_Q, params)
+% Run Tophat
 
-%% Run Tophat
-% modify output file name
-[path, name, ext] = fileparts(char(params.align{n}));
-% find sample folder name
-qualscore = char(strcat('_Q', num2str(params.qual)));
-split = strsplit(name, qualscore);
-fastq_name = split{1};
-outfile = [params.outputdir, fastq_name, '/', name, '/accepted_hits.bam'];
-
-if ~exist(outfile, 'file'),
-    % run tophat
-    run_tophat = [params.tophat_dir, 'tophat ', ...
+% create tophat call for paired end or single end reads
+if params.paired_ends
+    base_name = params.fastq_left_files{n}(1:end-8);
+    outfile = [params.sam_dir, base_name];
+    
+    run_tophat = ['nice ', params.tophat_dir, 'tophat ', ...
         strjoin(params.tophat_options), ' ', ...
         '--transcriptome-index ', params.gtf_file, ' ', ...
-        '-o ', params.sam_dir, fastq_name, '/', name, '/ ', ...
+        '-o ', outfile, ' ', ...
         params.genome, ' ', ...
-        params.outputdir, fastq_name, '/', name, ext, ...
+        params.fastq_dir, params.fastq_left_files{n} , ' ', ...
+        params.fastq_dir, params.fastq_right_files{n} ...
         ];
-    
-    system(run_tophat)
-    
-    % create cell of .bam files
-    params.accepted_bam_files{n} = [params.outputdir, fastq_name, '/', name, '/accepted_hits.bam'];
-    params.unmapped_bam_files{n} = [params.outputdir, fastq_name, '/', name, '/unmapped.bam'];
-    
 else
-    disp(['tophat: ', fastq_name, ' already exist']);
-    % create cell of .bam files
-    params.accepted_bam_files{n} = [params.outputdir, fastq_name, '/', name, '/accepted_hits.bam'];
-    params.unmapped_bam_files{n} = [params.outputdir, fastq_name, '/', name, '/unmapped.bam'];
+    base_name = params.fastq_files{n}(1:end-6);
+    outfile = [params.sam_dir, base_name];
     
+    run_tophat = ['nice ', params.tophat_dir, 'tophat ', ...
+        strjoin(params.tophat_options), ' ', ...
+        '--transcriptome-index ', params.gtf_file, ' ', ...
+        '-o ', outfile, ' ', ...
+        params.genome, ' ', ...
+        params.fastq_dir, params.fastq_files{n} ...
+        ];
 end
 
-%% convert .bam to .sam file
-for n = 1:numel(params.accepted_bam_files),
-   [params] = convert_bam(n, params);
+
+
+if ~exist(outfile, 'file'),
+    % execute tophat command line call if file isn't already aligned
+    system(run_tophat)
+else
+    disp(['tophat: ', outfile, ' already exists']);
+end
+
+% create cell of .bam files
+params.bam_files{n} = [outfile, '/accepted_hits.bam'];
+
+
+% convert .bam to .sam file
+for n = 1:numel(params.bam_files),
+    convert_bam(params.bam_files{n}, [params.sam_dir, base_name, '.sam']);
 end;
+
+end
+
