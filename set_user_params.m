@@ -67,6 +67,9 @@ else
 
 end
 
+% ending should be '.mat'
+params.output_filename = 'regev_data.mat';
+
 
 end
 
