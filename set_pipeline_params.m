@@ -3,6 +3,18 @@ function params = set_pipeline_params()
 
 params = set_user_params();
 
+if params.paired_ends
+    fastqs_left = dir([params.fastq_dir, '*.fastq_1']);
+    fastqs_right = dir([params.fastq_dir, '*.fastq_2']);
+    params.fastq_left_files = extractfield(fastqs_left, 'name');
+    params.fastq_right_files = extractfield(fastqs_right, 'name');
+    params.file_num = numel(fastqs_left);
+else
+    fastqs = dir([params.fastq_dir, '*.fastq']);
+    params.fastq_files = extractfield(fastqs, 'name');
+    params.file_num = numel(fastqs);
+end
+
 
 split_name = strsplit(params.gtf_file, '.');
 params.mat_file = [split_name{1}, '.mat'];

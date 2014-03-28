@@ -12,17 +12,7 @@ params.fastq_dir = '/media/newhd/Projects/regev_data/fastqs/';
 
 % collect single or paired end reads
 params.paired_ends = 1;
-if params.paired_ends
-    fastqs_left = dir([params.fastq_dir, '*.fastq_1']);
-    fastqs_right = dir([params.fastq_dir, '*.fastq_2']);
-    params.fastq_left_files = extractfield(fastqs_left, 'name');
-    params.fastq_right_files = extractfield(fastqs_right, 'name');
-    params.file_num = numel(fastqs_left);
-else
-    fastqs = dir([params.fastq_dir, '*.fastq']);
-    params.fastq_files = extractfield(fastqs, 'name');
-    params.file_num = numel(fastqs);
-end
+
 
 
 
