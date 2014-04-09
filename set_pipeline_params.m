@@ -1,6 +1,5 @@
 function params = set_pipeline_params()
 
-
 params = set_user_params();
 
 if params.paired_ends
@@ -58,8 +57,7 @@ for i=1:params.chrom_num
     
 end
 
-
-params.allsamples = [];
+params.gene_num = sum(sum(params.starts>0));
 
 
 

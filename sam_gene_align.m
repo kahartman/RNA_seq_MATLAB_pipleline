@@ -1,4 +1,4 @@
-function [params] = sam_gene_align(n, params)
+function counts_hash = sam_gene_align(n, params)
 
 
 
@@ -25,13 +25,15 @@ if params.transcriptome
     % each experiment has a hash tabel from genes to number of reads
     % if gene is not in hash, it is becuase it has zero reads mapping in
     % the experiment
-    
+    gene_counts = zeros(1,params.gene_num);
     [gene_names, ~, gene_inds] = unique(read_chroms);
     for i=1:max(gene_inds)
-        gene_counts(i) = sum(gene_inds == i);
+        if params.gene_annotation_hash.isKey(gene_names{i})
+            gene_counts(params.gene_annotation_hash(gene_names{i})) = sum(gene_inds == i);
+        end
     end
     
-    params.counts_hash{n} = containers.Map(gene_names, gene_counts);
+    counts_hash = containers.Map(params.gene_names, gene_counts);
     
 else
     % Align to genes
@@ -57,7 +59,8 @@ else
             
         end;
     end;
-    params.allsamples = [params.allsamples, counts(params.starts>0)];
+
+    counts = counts(params.starts>0);
     
     disp(params.fastq_files{n})
     disp([num2str(numel(read_starts)), ' reads']);
